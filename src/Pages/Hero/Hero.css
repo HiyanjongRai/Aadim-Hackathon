@@ -1,0 +1,83 @@
+.hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+  color: white;
+  overflow: hidden;
+  height: calc(100vh - 3.2rem);
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 50%;
+  position: absolute;
+  padding-left: calc(2rem + 16px);
+  
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.hero-content h1 span {
+  color: #000000;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 25px;
+  color: #000000;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 2rem;
+  padding-top: 0.4rem;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: white;
+  color: #4f46e5;
+}
+
+.btn-secondary {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.no-signup {
+  font-size: 0.9rem;
+  color: #000000;
+}
+
+.hero-image {
+width: 100%;
+height: 100%;
+}
+
+.hero-image img {
+ width: 100%;
+height: 100%;
+object-fit: cover;
+}
+.hero-btn1{
+    background-color: #000000;
+    color:#f5f5f5 ;
+}
+.hero-btn2{
+    background-color: #f5f5f5 !important;
+    color:#000000 !important ;
+
+}

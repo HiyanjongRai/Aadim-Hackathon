@@ -1,0 +1,147 @@
+.dashboard-container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.dashboard-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.logo-icon {
+  font-size: 24px;
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.header-subtitle {
+  font-size: 12px;
+  color: #666;
+  margin: 4px 0 0 0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-info {
+  text-align: right;
+}
+
+.username {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.user-role {
+  font-size: 12px;
+  color: #666;
+  margin: 4px 0 0 0;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: #fee;
+  color: #c33;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+.logout-btn:hover {
+  opacity: 0.9;
+}
+
+.dashboard-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 20px;
+}
+
+.dashboard-nav {
+  display: flex;
+  gap: 8px;
+  background-color: #fff;
+  padding: 8px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 24px;
+  overflow-x: auto;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #666;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.nav-link:hover {
+  background-color: #f5f5f5;
+}
+
+.nav-link-active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.nav-link-active:hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.dashboard-content {
+  min-height: 400px;
+}

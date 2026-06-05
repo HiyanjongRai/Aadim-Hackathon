@@ -1,0 +1,10 @@
+.count-container{
+    flex-direction: column;
+   padding: 2rem;
+}
+.count-container-bottom{
+    width: 100%;
+    padding-top: 2rem;
+
+}
+
