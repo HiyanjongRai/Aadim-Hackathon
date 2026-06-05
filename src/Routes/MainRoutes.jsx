@@ -6,25 +6,19 @@ import {
   Navigate,
 } from "react-router-dom";
 
-import { Layout } from "./Layout";
+// layout import removed (unused)
 import LoginPage from "../Pages/Login-SignUp/Login";
 import Signup from "../Pages/Login-SignUp/Signup";
 import StaffLogin from "../Pages/StaffLogin";
 
 // Student Protected Pages
 import Dashboard from "../Pages/Dashboard";
-import StudentDashboard, { StudentForm } from "../Pages/StudentForm";
+import StudentDashboard from "../Pages/StudentForm";
 import { ScholarshipForm } from "../Pages/ScholarshipForm";
 import { RecommendationList } from "../Pages/RecommendationList";
-import CollegesPage from "../Pages/CollegesPage";
 
 // Other existing pages
-import { Landing } from "../Pages/Landing";
-import HotPolls from "../Pages/AllPolls/HotPolls";
-import PollDetails from "../Pages/PollDetial/PollDetails";
-import SearchPolls from "../Pages/Search/SearchPolls";
-import AddPoll from "../Pages/Createpolls.jsx/AddPoll";
-import UserPolls from "../Pages/UserPoll/UserPoll";
+// removed unused page imports: Landing, HotPolls, PollDetails, SearchPolls, AddPoll, UserPolls
 import BusJourneyPlanner from "../Pages/AllPolls/Test";
 import HackDrive3D from "../Pages/HackDrive3D";
 import PaymentSuccess from "../Pages/PaymentSuccess";
@@ -38,11 +32,7 @@ const ProtectedStudentRoute = ({ children }) => {
   return children;
 };
 
-const ProtectedStaffRoute = ({ children }) => {
-  const staffId = localStorage.getItem("staffId");
-  if (!staffId) return <Navigate to="/staff" replace />;
-  return children;
-};
+// ProtectedStaffRoute removed (unused in this file)
 
 const PublicStudentRoute = ({ children }) => {
   const userId  = localStorage.getItem("userId");
