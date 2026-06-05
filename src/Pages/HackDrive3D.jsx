@@ -18,6 +18,7 @@ import {
 } from "../Redux/Slices/HackDriveSlice.ts";
 import { logout } from "../Redux/Slices/AuthSlice.ts";
 import BASE_URL from "../Redux/Slices/baseUrl.ts";
+import * as THREE from "three";
 
 function resolveImageUrl(path) {
   if (!path) return "";
@@ -1706,7 +1707,6 @@ export default function HackDrive3D() {
 
     async function init() {
       setLoadProgress(5); setLoadLabel("LOADING ENGINE");
-      const THREE = await import("https://esm.sh/three@0.160.0");
       if (!mounted) return;
 
       const steps = [
