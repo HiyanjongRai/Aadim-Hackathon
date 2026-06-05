@@ -57,7 +57,7 @@ const S = {
     fontSize: "26px",
   },
   pillBadge: {
-    display: "inline-block",
+    display: "block",
     background: "rgba(45,212,160,0.1)",
     color: "#2dd4a0",
     border: "1px solid rgba(45,212,160,0.2)",
@@ -68,7 +68,6 @@ const S = {
     letterSpacing: "0.06em",
     textTransform: "uppercase",
     margin: "0 auto 0.5rem",
-    display: "block",
     width: "fit-content",
     textAlign: "center",
   },

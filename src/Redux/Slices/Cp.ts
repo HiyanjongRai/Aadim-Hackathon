@@ -63,26 +63,6 @@ export interface PollQueryParams {
   status?: 'active' | 'expired' | 'all';
 }
 
-// Helper function to convert PollQueryParams to Record<string, string>
-const convertParamsToStringRecord = (params: PollQueryParams): Record<string, string> => {
-  const stringParams: Record<string, string> = {};
-  
-  if (params.page !== undefined) {
-    stringParams.page = params.page.toString();
-  }
-  if (params.limit !== undefined) {
-    stringParams.limit = params.limit.toString();
-  }
-  if (params.search !== undefined) {
-    stringParams.search = params.search;
-  }
-  if (params.status !== undefined) {
-    stringParams.status = params.status;
-  }
-  
-  return stringParams;
-};
-
 export const PollSlice = createApi({
   reducerPath: "PollApi",
   baseQuery: axiosBaseQuery(),

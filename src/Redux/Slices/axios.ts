@@ -78,13 +78,13 @@ instance.interceptors.response.use(
     if (
       originalRequest &&
       originalRequest.url === "/ApplicationUsers/Refresh" &&
-      [500].indexOf(error?.response?.status ?? 401) == -1
+      [500].indexOf(error?.response?.status ?? 401) === -1
     ) {
       return Promise.reject(error);
     }
 
     if (originalRequest) {
-      if (!originalRequest._retry && error?.response?.status == 401) {
+      if (!originalRequest._retry && error?.response?.status === 401) {
         if (isRefreshing) {
           return new Promise((resolve, reject) => {
             failedQueue.push({ resolve, reject });

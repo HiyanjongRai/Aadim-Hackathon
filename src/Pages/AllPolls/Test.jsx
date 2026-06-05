@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState, useMemo } from 'react';
+import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import {
   useGetAllStopsQuery,
   useGetAllRoutesQuery,
   useGetAllBusesQuery,
-  useGetAllCompaniesQuery,
   useCalculateRouteMutation,
 } from '../../Redux/Slices/Bus.ts';
 import "./Test.css";
@@ -173,29 +172,27 @@ export default function BusTracker() {
   const userMarkerRef      = useRef(null);
   const pinMarkersRef      = useRef([]);
 
-  const { data: stopsData }     = useGetAllStopsQuery();
-  const { data: routesData }    = useGetAllRoutesQuery();
-  const { data: busesData }     = useGetAllBusesQuery();
-  const { data: companiesData } = useGetAllCompaniesQuery();
+  const { data: stopsData }  = useGetAllStopsQuery();
+  const { data: routesData } = useGetAllRoutesQuery();
+  const { data: busesData }  = useGetAllBusesQuery();
   const [calculateRoute, { isLoading: calculating }] = useCalculateRouteMutation();
 
   const [userLocation,       setUserLocation]       = useState(null);
   const [selectedDestStopId, setSelectedDestStopId] = useState(null);
-  const [selectedCompanyId,  setSelectedCompanyId]  = useState(null);
+  const selectedCompanyId = null;
   const [routeResult,        setRouteResult]        = useState(null);
   const [selectedLeg1BusId,  setSelectedLeg1BusId]  = useState(null);
   const [selectedLeg2BusId,  setSelectedLeg2BusId]  = useState(null);
   const [expandedBusId,      setExpandedBusId]      = useState(null);
   const [scrolled,           setScrolled]           = useState(false);
 
-  const stops     = stopsData?.data     ?? [];
-  const routes    = routesData?.data    ?? [];
-  const allBuses  = busesData?.data     ?? [];
-  const companies = companiesData?.data ?? [];
+  const stops    = useMemo(() => stopsData?.data ?? [], [stopsData?.data]);
+  const routes   = useMemo(() => routesData?.data ?? [], [routesData?.data]);
+  const allBuses = useMemo(() => busesData?.data ?? [], [busesData?.data]);
 
   const needsBusChange = routeResult?.requiresBusChange ?? false;
-  const leg1Buses      = routeResult?.leg1Buses        ?? [];
-  const leg2Buses      = routeResult?.availableBuses   ?? [];
+  const leg1Buses = useMemo(() => routeResult?.leg1Buses ?? [], [routeResult]);
+  const leg2Buses = useMemo(() => routeResult?.availableBuses ?? [], [routeResult]);
 
   // Scroll header
   useEffect(() => {
@@ -228,29 +225,29 @@ export default function BusTracker() {
     }).filter(Boolean);
   }, [routes, allBuses]);
 
-  const enrichBuses = (backendList) =>
+  const enrichBuses = useCallback((backendList) =>
     backendList.map(b => {
       const local = positionedBuses.find(p => p?.busId === b.busId);
       return { ...b, currentLatitude: local?.currentLatitude ?? b.currentLatitude,
                currentLongitude: local?.currentLongitude ?? b.currentLongitude,
                nextStopName: local?.nextStopName ?? '' };
-    });
+    }), [positionedBuses]);
 
-  const enrichedLeg1 = useMemo(() => enrichBuses(leg1Buses), [leg1Buses, positionedBuses]);
-  const enrichedLeg2 = useMemo(() => enrichBuses(leg2Buses), [leg2Buses, positionedBuses]);
+  const enrichedLeg1 = useMemo(() => enrichBuses(leg1Buses), [leg1Buses, enrichBuses]);
+  const enrichedLeg2 = useMemo(() => enrichBuses(leg2Buses), [leg2Buses, enrichBuses]);
 
   // Auto-select recommended buses
   useEffect(() => {
     if (!enrichedLeg1.length) return;
     if (selectedLeg1BusId && enrichedLeg1.find(b => b.busId === selectedLeg1BusId)) return;
     setSelectedLeg1BusId((enrichedLeg1.find(b => b.isRecommended) ?? enrichedLeg1[0]).busId);
-  }, [enrichedLeg1]);
+  }, [enrichedLeg1, selectedLeg1BusId]);
 
   useEffect(() => {
     if (!enrichedLeg2.length) return;
     if (selectedLeg2BusId && enrichedLeg2.find(b => b.busId === selectedLeg2BusId)) return;
     setSelectedLeg2BusId((enrichedLeg2.find(b => b.isRecommended) ?? enrichedLeg2[0]).busId);
-  }, [enrichedLeg2]);
+  }, [enrichedLeg2, selectedLeg2BusId]);
 
   // ── Init map ──────────────────────────────────────────────────────────────
   useEffect(() => {

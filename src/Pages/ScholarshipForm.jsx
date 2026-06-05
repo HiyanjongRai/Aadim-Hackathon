@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import {
   useGetAllFieldsQuery,
-  useGetAllEducationLevelsQuery,
   useGetAllCollegesQuery,
   useCreateScholarshipMutation,
 } from "../Redux/Slices/ScholarshipApiSlice.ts";
@@ -35,9 +34,8 @@ const labelStyle = {
 const fieldWrap = { marginBottom: "1.1rem" };
 
 export const ScholarshipForm = () => {
-  const { data: fieldsData }    = useGetAllFieldsQuery();
-  const { data: educationData } = useGetAllEducationLevelsQuery();
-  const { data: collegesData }  = useGetAllCollegesQuery();
+  const { data: fieldsData }   = useGetAllFieldsQuery();
+  const { data: collegesData } = useGetAllCollegesQuery();
   const [createScholarship, { isLoading }] = useCreateScholarshipMutation();
 
   const [form, setForm] = useState({

@@ -352,7 +352,7 @@ function AdminToolbar({ isAdmin, isMobile, onNavigateLogin }) {
 function validateName(name) {
   if (!name.trim()) return "Name is required.";
   if (name.trim().length < 2) return "Name must be at least 2 characters.";
-  if (/[0-9!@#$%^&*()_+=\[\]{};':"\\|,.<>\/?]/.test(name.trim())) return "Name must not contain numbers or special characters.";
+  if (/[^a-zA-Z\s]/.test(name.trim())) return "Name must not contain numbers or special characters.";
   return null;
 }
 
@@ -364,7 +364,7 @@ function validateEmail(email) {
 
 function validatePhone(phone) {
   if (!phone.trim()) return "Phone number is required.";
-  const cleaned = phone.trim().replace(/[\s\-]/g, "");
+  const cleaned = phone.trim().replace(/[\s-]/g, "");
   if (!/^(\+977)?[9][6-8][0-9]{8}$/.test(cleaned)) {
     return "Enter a valid Nepal phone number (e.g. 98XXXXXXXX or +97798XXXXXXXX).";
   }
@@ -1201,7 +1201,6 @@ function SectionPanel({ secId, snapshot, isAdmin, isMobile, onRegister, refetchA
   const [adminModal, setAdminModal] = useState(null);
 
   const [updateConfig]   = useUpdateConfigMutation();
-  const [updateTheme]    = useUpdateThemeMutation();
   const [createSponsor]  = useCreateSponsorMutation();
   const [updateSponsor]  = useUpdateSponsorMutation();
   const [deleteSponsor]  = useDeleteSponsorMutation();
@@ -1304,21 +1303,6 @@ function SectionPanel({ secId, snapshot, isAdmin, isMobile, onRegister, refetchA
       ]}
       initial={cfg}
       onSave={v => afterSave(() => updateConfig(v).unwrap())}
-      onClose={() => setAdminModal(null)} />);
-  }
-
-  function openEditTheme() {
-    setAdminModal(<AdminModal title="Edit Theme" accent={accent}
-      fields={[
-        { key: "title",        label: "Title" },
-        { key: "subtitle",     label: "Subtitle" },
-        { key: "focusArea",    label: "Focus Area" },
-        { key: "coreQuestion", label: "Core Question" },
-        { key: "approach",     label: "Approach" },
-        { key: "scaleNote",    label: "Scale Note" },
-      ]}
-      initial={theme}
-      onSave={v => afterSave(() => updateTheme(v).unwrap())}
       onClose={() => setAdminModal(null)} />);
   }
 
@@ -2677,8 +2661,9 @@ export default function HackDrive3D() {
       renderer.domElement.addEventListener("click", onCanvasClick);
 
       const onResize = () => {
-        if (!mountRef.current) return;
-        const w = mountRef.current.clientWidth, h = mountRef.current.clientHeight;
+        const mountNode = mountRef.current;
+        if (!mountNode) return;
+        const w = mountNode.clientWidth, h = mountNode.clientHeight;
         cameraRef.current.aspect = w/h; cameraRef.current.updateProjectionMatrix();
         renderer.setSize(w, h);
       };
@@ -2693,26 +2678,28 @@ export default function HackDrive3D() {
     }
 
     const cleanup = init();
+    const mountNode = mountRef.current;
     return () => {
       mounted = false;
       if (frameRef.current) cancelAnimationFrame(frameRef.current);
-      if (rendererRef.current && mountRef.current) {
-        try { mountRef.current.removeChild(rendererRef.current.domElement); } catch {}
+      if (rendererRef.current && mountNode) {
+        try { mountNode.removeChild(rendererRef.current.domElement); } catch {}
         rendererRef.current.dispose();
       }
       cleanup?.then?.(fn => fn?.());
     };
-  }, [getSectionIdAt]);
+  }, [getSectionIdAt, snapshot.sponsors]);
 
   const pendingSponsorUpdateRef = useRef(null);
+  const sponsors = snapshot.sponsors;
 
   useEffect(() => {
     if (!window.__hackdriveUpdateSponsor) {
-      pendingSponsorUpdateRef.current = snapshot.sponsors.slice(0, 5);
+      pendingSponsorUpdateRef.current = sponsors.slice(0, 5);
       return;
     }
-    snapshot.sponsors.slice(0, 5).forEach((sp, i) => { window.__hackdriveUpdateSponsor(i, sp); });
-  }, [snapshot.sponsors]);
+    sponsors.slice(0, 5).forEach((sp, i) => { window.__hackdriveUpdateSponsor(i, sp); });
+  }, [sponsors]);
 
   useEffect(() => {
     const onWheel = e => {
